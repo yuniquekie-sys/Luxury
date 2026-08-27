@@ -1,0 +1,542 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: #080808;
+    color: #f0f0f0;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: #c9a84c;
+    color: #080808;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #0d0d0d;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #c9a84c;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  button {
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+@layer components {
+  /* Typography */
+  .font-display {
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 0.02em;
+  }
+
+  /* ─────────────────────────────────────────
+     BUTTONS — Instant 150ms CSS-first hover
+  ───────────────────────────────────────── */
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-8 py-4 bg-velocity-gold text-velocity-black font-body font-semibold text-sm tracking-widest uppercase;
+    transition: transform 150ms ease-out, box-shadow 150ms ease-out;
+    will-change: transform;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(201, 168, 76, 0.35);
+  }
+
+  .btn-primary:active {
+    transform: translateY(0);
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center gap-2 px-8 py-4 border border-velocity-white/30 text-velocity-white font-body font-medium text-sm tracking-widest uppercase;
+    transition: border-color 150ms ease-out, color 150ms ease-out, transform 150ms ease-out;
+    will-change: transform;
+  }
+
+  .btn-outline:hover {
+    border-color: #c9a84c;
+    color: #c9a84c;
+    transform: translateY(-1px);
+  }
+
+  .btn-outline:active {
+    transform: translateY(0);
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 px-6 py-3 text-velocity-subtle font-body font-medium text-sm tracking-wider uppercase;
+    transition: color 150ms ease-out;
+  }
+
+  .btn-ghost:hover {
+    color: #f0f0f0;
+  }
+
+  /* ─────────────────────────────────────────
+     VEHICLE CARDS — Instant CSS-first hover
+     Zero React state, zero JS re-render on hover
+  ───────────────────────────────────────── */
+  .vehicle-card {
+    position: relative;
+    background-color: #111111;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* GPU-composited: only transform, border-color, box-shadow */
+    transition:
+      transform 180ms ease-out,
+      border-color 180ms ease-out,
+      box-shadow 180ms ease-out;
+    will-change: transform;
+    transform: translateZ(0); /* promote to GPU layer */
+  }
+
+  @media (hover: hover) {
+    .vehicle-card:hover {
+      transform: translateY(-4px) translateZ(0);
+      border-color: rgba(201, 168, 76, 0.65);
+      box-shadow:
+        0 0 0 1px rgba(201, 168, 76, 0.15),
+        0 12px 32px rgba(201, 168, 76, 0.12),
+        0 20px 48px rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  /* Card image — instant GPU zoom */
+  .vehicle-card .card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 200ms ease-out;
+    will-change: transform;
+    transform: scale(1) translateZ(0);
+  }
+
+  @media (hover: hover) {
+    .vehicle-card:hover .card-img {
+      transform: scale(1.04) translateZ(0);
+    }
+  }
+
+  /* Card title gold transition */
+  .vehicle-card .card-title {
+    transition: color 180ms ease-out;
+  }
+
+  @media (hover: hover) {
+    .vehicle-card:hover .card-title {
+      color: #c9a84c;
+    }
+  }
+
+  /* CTA arrow nudge */
+  .vehicle-card .card-btn-arrow {
+    display: inline-block;
+    transition: transform 180ms ease-out;
+  }
+
+  @media (hover: hover) {
+    .vehicle-card:hover .card-btn-arrow {
+      transform: translateX(4px);
+    }
+  }
+
+  /* ─────────────────────────────────────────
+     CATEGORY CARDS
+  ───────────────────────────────────────── */
+  .category-card {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .category-card img {
+    transition: transform 400ms ease-out;
+  }
+
+  @media (hover: hover) {
+    .category-card:hover img {
+      transform: scale(1.06);
+    }
+  }
+
+  /* ─────────────────────────────────────────
+     NAVIGATION LINKS — Instant 120ms response
+  ───────────────────────────────────────── */
+  .nav-link {
+    @apply text-velocity-subtle text-sm tracking-widest uppercase font-medium;
+    transition: color 120ms ease-out;
+  }
+
+  .nav-link:hover {
+    color: #f0f0f0;
+  }
+
+  /* ─────────────────────────────────────────
+     SECTION LABELS & DIVIDERS
+  ───────────────────────────────────────── */
+  .section-label {
+    @apply text-velocity-gold text-xs tracking-[0.25em] uppercase font-medium font-body;
+  }
+
+  .divider {
+    @apply w-12 h-px bg-velocity-gold;
+  }
+
+  /* ─────────────────────────────────────────
+     STAT DISPLAY
+  ───────────────────────────────────────── */
+  .stat-number {
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 0.02em;
+    @apply text-6xl md:text-8xl text-velocity-white;
+  }
+
+  /* ─────────────────────────────────────────
+     FORMS
+  ───────────────────────────────────────── */
+  .input-luxury {
+    @apply w-full bg-velocity-surface border border-velocity-border text-velocity-white placeholder-velocity-muted px-4 py-3 text-sm font-body;
+    transition: border-color 150ms ease-out;
+  }
+
+  .input-luxury:focus {
+    @apply outline-none;
+    border-color: #c9a84c;
+  }
+
+  /* ─────────────────────────────────────────
+     BADGES
+  ───────────────────────────────────────── */
+  .badge {
+    @apply inline-flex items-center px-3 py-1 text-xs tracking-widest uppercase font-medium font-body;
+  }
+
+  .badge-gold {
+    @apply badge bg-velocity-gold/10 text-velocity-gold border border-velocity-gold/20;
+  }
+
+  .badge-subtle {
+    @apply badge bg-velocity-surface-2 text-velocity-subtle border border-velocity-border;
+  }
+
+  /* ─────────────────────────────────────────
+     SKELETON LOADER
+  ───────────────────────────────────────── */
+  .skeleton {
+    background: linear-gradient(90deg, #1a1a1a 25%, #222 50%, #1a1a1a 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  /* ─────────────────────────────────────────
+     TOAST
+  ───────────────────────────────────────── */
+  .toast {
+    @apply fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-4 text-sm font-body text-velocity-white;
+    background: rgba(8, 8, 8, 0.92);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-left: 2px solid #c9a84c;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Gold gradient text */
+  .text-gold-gradient {
+    background: linear-gradient(135deg, #c9a84c, #e0c060, #a07830);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Glow */
+  .glow-gold {
+    box-shadow: 0 0 20px rgba(201, 168, 76, 0.2);
+  }
+
+  /* Image overlays */
+  .overlay-dark {
+    background: linear-gradient(to top, rgba(8,8,8,0.95) 0%, rgba(8,8,8,0.4) 50%, rgba(8,8,8,0.1) 100%);
+  }
+
+  .overlay-cinematic {
+    background: linear-gradient(to right, rgba(8,8,8,0.9) 40%, rgba(8,8,8,0) 100%);
+  }
+
+  /* Glass */
+  .glass {
+    background: rgba(255,255,255,0.03);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .glass-dark {
+    background: rgba(8,8,8,0.85);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  /* Animated underline */
+  .animated-underline {
+    position: relative;
+  }
+
+  .animated-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: #c9a84c;
+    transition: width 200ms ease-out;
+  }
+
+  .animated-underline:hover::after {
+    width: 100%;
+  }
+}
+
+/* ─────────────────────────────────────────
+   SCROLL PROGRESS BAR
+───────────────────────────────────────── */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(to right, #c9a84c, #e0c060);
+  z-index: 1000;
+  transform-origin: left;
+  will-change: transform;
+}
+
+/* ─────────────────────────────────────────
+   KEYFRAMES
+───────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes heroReveal {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0% 0 0); }
+}
+
+/* ─────────────────────────────────────────
+   CINEMATIC LIVE HERO BACKGROUND (GPU-Only)
+───────────────────────────────────────── */
+@keyframes heroKenBurns {
+  0% {
+    transform: scale(1.00) translate3d(0, 0, 0);
+  }
+  50% {
+    transform: scale(1.04) translate3d(-0.8%, -0.4%, 0);
+  }
+  100% {
+    transform: scale(1.01) translate3d(0.4%, 0.3%, 0);
+  }
+}
+
+@keyframes heroLightSweep {
+  0% {
+    transform: translateX(-120%) rotate(-25deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.16;
+  }
+  35% {
+    opacity: 0.22;
+  }
+  60% {
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(220%) rotate(-25deg);
+    opacity: 0;
+  }
+}
+
+@keyframes heroAtmospherePulse {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes heroHeadlightGlow {
+  0%, 100% {
+    opacity: 0.40;
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.4));
+  }
+  50% {
+    opacity: 0.70;
+    filter: drop-shadow(0 0 28px rgba(201, 168, 76, 0.6));
+  }
+}
+
+.hero-live-bg {
+  animation: heroKenBurns 24s ease-in-out infinite alternate;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.hero-light-sweep {
+  position: absolute;
+  top: -60%;
+  left: -60%;
+  width: 220%;
+  height: 220%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 42%,
+    rgba(255, 255, 255, 0.04) 47%,
+    rgba(201, 168, 76, 0.14) 50%,
+    rgba(255, 255, 255, 0.06) 53%,
+    transparent 58%,
+    transparent 100%
+  );
+  pointer-events: none;
+  animation: heroLightSweep 16s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+  mix-blend-mode: screen;
+}
+
+.hero-ambient-glow {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201, 168, 76, 0.18) 0%, rgba(201, 168, 76, 0.03) 60%, transparent 80%);
+  filter: blur(50px);
+  pointer-events: none;
+  animation: heroAtmospherePulse 12s ease-in-out infinite;
+}
+
+.hero-headlight-bloom {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(201, 168, 76, 0.3) 40%, transparent 70%);
+  filter: blur(25px);
+  pointer-events: none;
+  animation: heroHeadlightGlow 8s ease-in-out infinite;
+}
+
+/* ─────────────────────────────────────────
+   CUSTOM CURSOR (desktop only, GPU-only)
+───────────────────────────────────────── */
+@media (pointer: fine) {
+  .custom-cursor {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: #c9a84c;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 200ms ease, height 200ms ease, opacity 200ms ease;
+    mix-blend-mode: difference;
+    will-change: transform;
+  }
+
+  .custom-cursor-ring {
+    position: fixed;
+    width: 34px;
+    height: 34px;
+    border: 1px solid rgba(201, 168, 76, 0.45);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 120ms ease;
+    will-change: transform;
+  }
+}
+
+/* ─────────────────────────────────────────
+   ACCESSIBILITY — Respect reduced motion
+───────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .vehicle-card,
+  .vehicle-card .card-img,
+  .vehicle-card .card-title,
+  .btn-primary,
+  .btn-outline {
+    transition: none !important;
+    transform: none !important;
+  }
+}
